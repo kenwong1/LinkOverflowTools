@@ -12,6 +12,8 @@ import config, aws, puppet, djangoutils
 # are present and contain the necessary settings (AWS keys, etc). If we receive an Exception,
 # we don't have a valid configuration and we'll simply abort the launch.
 #
+# KW: Test with valid and invalid arguments. Invalid argument types can be found in config.py
+#
 try:
     (numServers, djangoProj, awsConfigDict, instanceConfigDict) = config.validateConfig()
 except Exception as mesg:
@@ -52,6 +54,8 @@ except Exception as mesg:
 # We use Puppet for this purpose. First we must install the puppet tool itself, and then copy
 # over the puppet configuration file. Finally, we run the puppet tool to apply the changes.
 # TODO: this is *serialized* and needs to be made parallel.
+#
+# KW: We should output the username and hostname after Fabric has connected to the remote systems to help debug in case there are problems.
 #
 try:
     puppet.installPuppet(awsConfigDict['EC2_SSHKeyPairFile'], instanceConfigDict['Puppet_PuppetURL'], ipList)
