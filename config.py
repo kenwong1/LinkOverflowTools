@@ -46,7 +46,7 @@ def checkFileIsPrivate(fileName):
 # 
 # We throw an exception if an error is encountered.
 #
-#   KW: Missing "djangoProj" return value in comment and description above
+#   KW: [Process] Missing "djangoProj" return value in comment and description above
 #
 def validateConfig():
     '''Parse and validate command-line arguments, and ensure the expected configuration files are present
@@ -82,7 +82,7 @@ def validateConfig():
     #
     # The number of instances to be created must be at least 1 (and for now, we limit to small maximum value - MAX_EC2_INSTANCES)
     #
-	# KW: Test for num_servers with values of -1, 0, 1, 5, 6
+    # KW: [Test] Verify num_servers with values of -1, 0, 1, 5, 6
     #
     numServers = parsedArgs.num_servers
     if (numServers < 1) or (numServers > MAX_EC2_INSTANCES):
@@ -91,7 +91,7 @@ def validateConfig():
     #
     # Validate that "django_proj" is a directory that contains a manage.py file.
     #
-	# KW: Test for invalid directory path, path with no manage.py, and path with invalid manage.py
+    # KW: [Test] Verify invalid directory path, path with no manage.py, and path with invalid manage.py
     #
     djangoProj = parsedArgs.django_proj
     if not os.path.isfile(djangoProj + "/manage.py"):
@@ -101,7 +101,7 @@ def validateConfig():
     # The AWS settings file must exist, and must be accessible *only* by the current user. This file contains
     # security keys and must remain protected.
     #
-	# KW: Test for settings file that is accessible by everyone, by owner only, and not by owner. 	
+    # KW: [Test] Verify settings file permission that is accessible by everyone, by owner only, and not by owner. 	
     #
     error = checkFileIsPrivate(parsedArgs.aws_settings)
     if error != None:
@@ -110,7 +110,7 @@ def validateConfig():
     #
     # now, read the key/values from the AWS settings file into the dictionary we'll return to our caller.
     #
-    # KW: Also test if settings file is not present and invalid (e.g. contains missing properties).
+    # KW: [Test] Also verify if settings file is not present and invalid (e.g. contains missing properties).
     #
     awsConfigDict = {}
     try:
@@ -128,7 +128,7 @@ def validateConfig():
     #
     # The SSH key file must exist and only be accessible to the owner.
     #
-    # KW: Test if SSH file is missing, accessible by everyone, by owner only, and not by owner.
+    # KW: [Test] Verify if SSH file is missing, accessible by everyone, by owner only, and not by owner.
     #
     error = checkFileIsPrivate(awsConfigDict['EC2_SSHKeyPairFile'])
     if error != None:
@@ -137,7 +137,7 @@ def validateConfig():
     #
     # The instance config file must exist and be readable.
     #
-    # KW: Test if config file is missing and not accessible by owner.
+    # KW: [Test] Verify if config file is missing and not accessible by owner.
     #
     if not os.access(parsedArgs.instance_config, os.R_OK):
         raise Exception("Instance configuration file ({0}) is either missing or unreadable".format(parsedArgs.instance_config))
@@ -145,7 +145,7 @@ def validateConfig():
     #
     # Read the key/values from the instance config file into the dictionary we'll return to our caller.
     #
-    # KW: Test for missing properties in configuration file (e.g. no Puppet_PuppetURL).
+    # KW: [Test] Verify missing properties in configuration file (e.g. no Puppet_PuppetURL).
     #
     instanceConfigDict = {}
     try:
@@ -159,7 +159,7 @@ def validateConfig():
         raise Exception("Instance configuration file ({0}): {1}".format(parsedArgs.instance_config, mesg))
     
     # check for existence of puppet file (validity can only be checked later)
-    # KW: Test with missing and invalid Puppet file
+    # KW: [Test] Verify missing and invalid Puppet file
     #
     if not os.path.isfile(instanceConfigDict['Puppet_PuppetConfigFile']):
         raise Exception("PuppetConfigFile field does not provide a valid file name.")
