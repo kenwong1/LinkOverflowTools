@@ -49,13 +49,16 @@ def launchEC2Instances(accessKeyId, secretAccessKey, numServers, availabilityZon
     # KW: We can refactor the while loop by checking for instance_status.status != "ok" instead of True.
     #     Once instance_status equals "ok", the loop will break.
     #
-    #   statusSet = "starting"
-    #   while statusSet != "ok":
-    #       time.sleep(5)
-    #       newStatus = ec2.get_all_instance_status(instance_ids=[instance.id])
-    #       if len(newStatus) != 0:
-    #           statusSet = newStatus
-    #       
+    #   for instance in reservation.instances:
+    #       statusSet = "initializing"
+    #       while statusSet != "ok":
+    #           time.sleep(5)
+    #           newStatus = ec2.get_all_instance_status(instance_ids=[instance.id])
+    #           if len(newStatus) != 0:
+    #               statusSet = newStatus[0].instance_status.status
+    #       instance.update()
+    #       ipList.append(instance.ip_address)
+    #
     ipList = []
     for instance in reservation.instances:
         while True:
