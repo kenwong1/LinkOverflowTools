@@ -8,8 +8,8 @@ from fabric import api
 #
 # Ensure that the specified list of EC2 instances has Puppet installed.
 #
-# KW: Need to test for valid/correct puppetURL and throw some error if it is incorrect.
-#     Also verify that Puppet files are installed at the expected file location. 
+# KW: [Test] Verify valid/correct puppetURL and throw some error if it is incorrect.
+#     [Test] Also verify that Puppet files are installed at the expected file location. 
 def installPuppet(keyFile, puppetURL, ipList):
     '''Install the Puppet application on the specified list of Linux instances, if it's not already installed'''
     
@@ -29,7 +29,7 @@ def __installpuppettask__(puppetURL):
 # is the main entry point that you should call, and "__applyConfigTask__" is a private task that's
 # called by the Fabric framework (not directly by a caller)
 #
-# KW: We should display any exceptions or errors thrown by Puppet after applying the configuration.
+# KW: [Process] We should display any exceptions or errors thrown by Puppet after applying the configuration.
 #     
 def applyConfig(keyFile, configFileName, ipList):
     '''Apply a puppet configuration (configFileName) to the nodes listed in ipList.'''
