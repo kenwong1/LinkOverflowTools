@@ -12,7 +12,8 @@ def launchEC2Instances(accessKeyId, secretAccessKey, numServers, availabilityZon
     # Create a connection to EC2. This can fail for several different reasons. Make sure we provide a helpful
     # error message if possible.
     #
-    # KW: We should remove the "probably due to..." section of the error messages since there could be other reasons for failure.
+    # KW: [Code] We should remove the "probably due to..." section of the error messages since there could be other reasons for failure.
+    #
     try:
         ec2 = boto.ec2.connect_to_region(availabilityZone, aws_access_key_id=accessKeyId, aws_secret_access_key=secretAccessKey)
     except boto.exception.EC2ResponseError as mesg:
@@ -46,7 +47,7 @@ def launchEC2Instances(accessKeyId, secretAccessKey, numServers, availabilityZon
     # will be ready immediately after the first instance is ready, since they're booting up in parallel. However, if one of
     # the instances doesn't start up, this algorithm will fail (TODO: fix this)
     #
-    # KW: We can refactor the while loop by checking for instance_status.status != "ok" instead of True.
+    # KW: [Code] We can refactor the while loop by checking for instance_status.status != "ok" instead of True.
     #     Once instance_status equals "ok", the loop will break.
     #
     #   for instance in reservation.instances:
