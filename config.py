@@ -47,15 +47,9 @@ def checkFileIsPrivate(fileName):
 # We throw an exception if an error is encountered.
 #
 #   KW: [Process] Missing "djangoProj" return value in comment and description above
+#       [Code] Refactored the parser into its own method so that we can test it individually
 #
-def validateConfig():
-    '''Parse and validate command-line arguments, and ensure the expected configuration files are present
-    and contain the required configuration values'''
-        
-    #
-    # Parse command-line arguments. This uses the standard Python argparse module to collect and validate
-    # input parameters.
-    #
+def create_parser():
     defaultSettingsFile = os.path.expanduser("~/.aws.settings")
     parser = argparse.ArgumentParser(
                         prog="launch.py",
@@ -77,6 +71,17 @@ def validateConfig():
     parser.add_argument('num_servers',
                         type=int,
                         help="The number of AWS instances to create and install the application on.")
+    return parser
+
+def validateConfig():
+    '''Parse and validate command-line arguments, and ensure the expected configuration files are present
+    and contain the required configuration values'''
+        
+    #
+    # Parse command-line arguments. This uses the standard Python argparse module to collect and validate
+    # input parameters.
+    #    
+    parser = create_parser()
     parsedArgs = parser.parse_args()
     
     #
