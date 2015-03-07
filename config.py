@@ -47,7 +47,7 @@ def checkFileIsPrivate(fileName):
 # We throw an exception if an error is encountered.
 #
 #   KW: [Process] Missing "djangoProj" return value in comment and description above
-#       [Code] Refactored the parser into its own method so that we can test it individually
+#       [Code] Refactored the parser into its own method so that we can unit test it individually
 #
 def create_parser():
     defaultSettingsFile = os.path.expanduser("~/.aws.settings")

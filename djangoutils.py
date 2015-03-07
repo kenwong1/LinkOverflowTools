@@ -10,8 +10,10 @@ from fabric import api
 # whole function will abort. TODO: fix this to instead throw an exception
 # to the caller.
 #
-# KW: [Test] Verify that Django Project files are copied over at the correct location afterwards.
-#     [Process] Perhaps also do a CRC check on each file at remote location to verify file validity.
+# KW: [Test] Verify there is enough storage space at remote machine for us to copy over all required files
+#     [Test] Verify that Django Project files are copied over at the correct location afterwards.
+#     [Process] Perhaps also do a CRC check on each file at remote machine to verify file correctness.
+#
 def deployProject(keyFile, djangoProjPath, ipList):
     '''Copy a full Django project over to a set of EC2 instances.'''
     
@@ -38,6 +40,7 @@ def __deployprojecttask__(djangoProjPath):
 #
 # KW: [Test] Verify database is up and running afterwards. This can be done programmatically via SQL command-line.
 #     [Test] Verify web app server is running. We can automate this by checking if the service is listening to the correct HTTP ports after it has started.
+#
 def runProject(keyFile, djangoProjectPath, ipList):
     '''Start a Django web project running on a set of EC2 instances.'''
     
@@ -54,6 +57,8 @@ def __runprojecttask__(djangoProjPath):
     # web server running. Note that we need to disconnect stdin/stdout/stderr so that Fabric
     # can run the server in the background. TODO: fix this so we can capture log/error output
     # in a file.
+    #
+    # KW: [Test] Verify database is migrated propery to remote machine afterwards
     #
     remoteDir = os.path.basename(djangoProjPath)
     api.run("cd " + remoteDir + " && python manage.py migrate")

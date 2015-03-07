@@ -48,6 +48,7 @@ def launchEC2Instances(accessKeyId, secretAccessKey, numServers, availabilityZon
     # the instances doesn't start up, this algorithm will fail (TODO: fix this)
     #
     # KW: [Code] We can refactor the while loop by checking for instance_status.status != "ok" instead of True.
+    #     This will increase performance by not performing another if-check.
     #     Once instance_status equals "ok", the loop will break.
     #
     #   for instance in reservation.instances:

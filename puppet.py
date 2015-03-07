@@ -10,6 +10,7 @@ from fabric import api
 #
 # KW: [Test] Verify valid/correct puppetURL and throw some error if it is incorrect.
 #     [Test] Also verify that Puppet files are installed at the expected file location. 
+#
 def installPuppet(keyFile, puppetURL, ipList):
     '''Install the Puppet application on the specified list of Linux instances, if it's not already installed'''
     
