@@ -1,11 +1,19 @@
-import unittest, config
+import unittest, config, os, test-util
 
 class ConfigSetup(unittest.TestCase):
+
     ''' This will sets up the command line parser from config.py '''
     @classmethod
     def setUpClass(cls):
         parser = config.create_parser()
         cls.parser = parser
+        ''' Update aws.settings location before running test '''
+        defaultSettingsFile = test-util.getAWSSettings()
+        notReadableByOwnerFile = test-util.getFileNotReadableByOwner()
+        readableByOthersFile = test-util.getFileReadableByOthers()
+        cls.defaultSettingsFile = defaultSettingsFile
+        cls.notReadableByOwnerFile = notReadableByOwnerFile
+        cls.readableByOthersFile = readableByOthersFile
 
 class ValidateConfig(ConfigSetup):
 
@@ -28,9 +36,17 @@ class ValidateConfig(ConfigSetup):
         self.assertEqual(parsedArgs.django_proj, django_project_file)
         self.assertEqual(parsedArgs.num_servers, int(num_servers))
     
-    def test_checkFileIsPrivate_no_file(self):
-        ''' Test passing in an invalid file name for test_checkFileIsPrivate_no_file '''
+    def test_checkFileIsPrivate_no_file(self):        
         self.assertRegexpMatches(config.checkFileIsPrivate('filename'), '.*is missing.')
+
+    def test_checkFileIsPrivate_file_not_readable(self):        
+        self.assertRegexpMatches(config.checkFileIsPrivate(self.notReadableByOwnerFile), '.*is not readable.')
+
+    def test_checkFileIsPrivate_readable_by_others(self):        
+        self.assertRegexpMatches(config.checkFileIsPrivate(self.readableByOthersFile), '.*is readable/writable by other users.')
+
+    def test_checkFileIsPrivate_valid(self):        
+        self.assertIsNone(config.checkFileIsPrivate(self.defaultSettingsFile))
         
 if __name__ == '__main__':
     unittest.main()
