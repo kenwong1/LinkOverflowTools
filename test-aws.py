@@ -6,8 +6,8 @@ class ConfigSetup(unittest.TestCase):
     def setUpClass(cls):
         ''' This will setup valid AWS connection variables that we will use for all the tests '''
 
-        accessKeyId = 'AKIAJVKMGB365LWDH36A'
-        secretAccessKey = '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'
+        accessKeyId = ''
+        secretAccessKey = ''
         availabilityZone = 'us-west-2'
         amiImage = 'ami-c7d092f7'
         instanceType = 't2.micro'
