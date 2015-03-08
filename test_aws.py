@@ -4,10 +4,11 @@ class ConfigSetup(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+
         # This will setup valid AWS connection variables that we will use for all the tests
         #
         # Read the values from .aws.settings file
-
+        #
         awsConfigDict = {}
         try:
             awsConfigParser = ConfigParser.RawConfigParser()
@@ -21,7 +22,7 @@ class ConfigSetup(unittest.TestCase):
             raise Exception("AWS settings file ({0}): {1}".format(test_utils.getAWSSettings(), mesg))
 
         # Read the values from instance.config file
-
+        #
         instanceConfigDict = {}
         try:
             instanceConfigParser = ConfigParser.RawConfigParser()
@@ -50,26 +51,30 @@ class ConfigSetup(unittest.TestCase):
 class ValidateAWS(ConfigSetup):
     
     def test_invalid_launchEC2Instances(self):
-        # Test launching EC2 instances with invalid access key
 
+        # Test launching EC2 instances with invalid access key
+        #
         with self.assertRaisesRegexp(Exception, "Unable to connect to EC2*"):
             ipList = aws.launchEC2Instances('accessKeyId', 'secretAccessKey', 1, 'availabilityZone', 'amiImage', 'instanceType', 'keyPairName')
         
     def test_keyPair_none(self):
-        # Test passing an invalid keyPairName
 
+        # Test passing an invalid keyPairName
+        #
         with self.assertRaisesRegexp(Exception, ".*is not defined. Use the AWS console to create it."):
             ipList = aws.launchEC2Instances(self.accessKeyId, self.secretAccessKey, 1, self.availabilityZone, self.amiImage, self.instanceType, 'keyPairName')        
 
     def test_invalid_reservation(self):
-        # Test passing an invalid instanceType
 
+        # Test passing an invalid instanceType
+        #
         with self.assertRaisesRegexp(Exception, "Unable to launch EC2 instances*"):
             ipList = aws.launchEC2Instances(self.accessKeyId, self.secretAccessKey, 1, self.availabilityZone, self.amiImage, 'instanceType', self.keyPairName)        
 
     def test_valid_scenario(self):        
-        # Test launching EC2 instance with valid arguments
 
+        # Test launching EC2 instance with valid arguments
+        #
         ipList = aws.launchEC2Instances(self.accessKeyId, self.secretAccessKey, 2, self.availabilityZone, self.amiImage, self.instanceType, self.keyPairName)        
         self.assertIsNotNone(ipList)
         

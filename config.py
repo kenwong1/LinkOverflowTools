@@ -47,7 +47,9 @@ def checkFileIsPrivate(fileName):
 # We throw an exception if an error is encountered.
 #
 #   KW: [Process] Missing "djangoProj" return value in comment and description above
-#       [Code] Refactored the parser into its own method so that we can unit test it individually
+#       [Code] I refactored the parser into its own method so that we can unit test it individually.
+#       [Code] Usage description for passing .aws.config file is incorrectly shown as "--aws-config". It should be "--aws-settings"
+#       [Code] Usage description for passing instance.config file is incorrectly shown as "--system-config". It should be "--instance-config"
 #
 def create_parser():
     defaultSettingsFile = os.path.expanduser("~/.aws.settings")
@@ -164,6 +166,7 @@ def validateConfig():
         raise Exception("Instance configuration file ({0}): {1}".format(parsedArgs.instance_config, mesg))
     
     # check for existence of puppet file (validity can only be checked later)
+    #
     # KW: [Test] Verify missing and invalid Puppet file
     #
     if not os.path.isfile(instanceConfigDict['Puppet_PuppetConfigFile']):

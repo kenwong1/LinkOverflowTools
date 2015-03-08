@@ -6,7 +6,7 @@ def create_parser():
     defaultSettingsFile = os.path.expanduser("~/.aws.settings")
     parser = argparse.ArgumentParser(
                         prog="showstate.py",
-                        usage="%(prog)s [-h] [--aws-config <file>]",
+                        usage="%(prog)s [-h] [--aws-settings <file>]",
                         description="Tool for showing state of EC2 instances") 
     parser.add_argument('--aws-settings',
                         default=defaultSettingsFile,
