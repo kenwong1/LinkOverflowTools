@@ -7,7 +7,7 @@ import os
 
 
 def getAWSSettings():
-    return os.path.expanduser(".aws.settings")
+    return os.path.expanduser("~/.aws.settings")
 
 def getInstanceConfig():
     return 'instance.config'
