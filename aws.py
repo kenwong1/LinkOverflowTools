@@ -50,28 +50,38 @@ def launchEC2Instances(accessKeyId, secretAccessKey, numServers, availabilityZon
     # KW: [Code] We can refactor the while loop by checking for instance_status.status != "ok" instead of True.
     #     This will increase performance by not performing another if-check.
     #     Once instance_status equals "ok", the loop will break.
+    #     Timeout is set to 5 minutes.
     #
-    #   for instance in reservation.instances:
-    #       statusSet = "initializing"
-    #       while statusSet != "ok":
-    #           time.sleep(5)
-    #           newStatus = ec2.get_all_instance_status(instance_ids=[instance.id])
-    #           if len(newStatus) != 0:
-    #               statusSet = newStatus[0].instance_status.status
-    #       instance.update()
-    #       ipList.append(instance.ip_address)
-    #
-    ipList = []
+    ipList = []    
+    timeout = 300
     for instance in reservation.instances:
-        while True:
-            statusSet = ec2.get_all_instance_status(instance_ids=[instance.id])
-            if len(statusSet) != 0:
-                if statusSet[0].instance_status.status == "ok":
-                    break;
-                # TODO: need a timeout mechanism here, in case of failure.
+        statusSet = "initializing"
+        counter = 0
+        while statusSet != "ok":
+            if (counter == timeout):
+                print "\nTimeout while waiting for ", instance.id, " to start..."
+                break
             time.sleep(5)
+            counter = counter + 5
+            newStatus = ec2.get_all_instance_status(instance_ids=[instance.id])
+            if len(newStatus) != 0:
+                statusSet = newStatus[0].instance_status.status            
         instance.update()
         ipList.append(instance.ip_address)
+
+
+    # KW: [Code] Original code below
+    #
+    # for instance in reservation.instances:
+    #     while True:
+    #         statusSet = ec2.get_all_instance_status(instance_ids=[instance.id])
+    #         if len(statusSet) != 0:
+    #             if statusSet[0].instance_status.status == "ok":
+    #                 break;
+    #             # TODO: need a timeout mechanism here, in case of failure.
+    #         time.sleep(5)
+    #     instance.update()
+    #     ipList.append(instance.ip_address)
     
     #
     # On success, we know that all instances are alive. Return the list of IP addresses.

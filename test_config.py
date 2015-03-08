@@ -1,16 +1,18 @@
-import unittest, config, os, test-util
+import unittest, config, os, test_utils
 
 class ConfigSetup(unittest.TestCase):
 
-    ''' This will sets up the command line parser from config.py '''
+    # This will sets up the command line parser from config.py
+    #
     @classmethod
-    def setUpClass(cls):
-        parser = config.create_parser()
+    def setUpClass(cls):       
+        # Update aws.settings location before running test
+        
+        parser = config.create_parser()        
+        defaultSettingsFile = test_utils.getAWSSettings()
+        notReadableByOwnerFile = test_utils.getFileNotReadableByOwner()
+        readableByOthersFile = test_utils.getFileReadableByOthers()
         cls.parser = parser
-        ''' Update aws.settings location before running test '''
-        defaultSettingsFile = test-util.getAWSSettings()
-        notReadableByOwnerFile = test-util.getFileNotReadableByOwner()
-        readableByOthersFile = test-util.getFileReadableByOthers()
         cls.defaultSettingsFile = defaultSettingsFile
         cls.notReadableByOwnerFile = notReadableByOwnerFile
         cls.readableByOthersFile = readableByOthersFile
@@ -18,12 +20,16 @@ class ConfigSetup(unittest.TestCase):
 class ValidateConfig(ConfigSetup):
 
     def test_with_empty_args(self):
-        ''' Tests passing in no argument '''
+        
+        # Tests passing in no argument
+        
         with self.assertRaises(SystemExit):
             self.parser.parse_args([])
             
     def test_all_arguments(self):        
-        ''' Tests passing in all arguments to create_parser and verifying each one is set correctly'''
+        
+        # Tests passing in all arguments to create_parser and verifying each one is set correctly
+
         aws_settings = 'test_aws_settings'
         confile_file = 'test_config_file'
         django_project_file = 'test_django_file'

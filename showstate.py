@@ -1,6 +1,7 @@
 import sys, boto.ec2, os, argparse, ConfigParser
 
-''' This will create the command line argument parser and return it '''
+# This will create the command line argument parser and return it
+#
 def create_parser():
     defaultSettingsFile = os.path.expanduser("~/.aws.settings")
     parser = argparse.ArgumentParser(
@@ -14,7 +15,8 @@ def create_parser():
                             "important keys and should be kept secret at all times.")   
     return parser
 
-''' This will check the AWS settings file and return the dictionary '''
+# This will check the AWS settings file and return the dictionary
+#
 def validateConfig():
     parser = create_parser()
     parsedArgs = parser.parse_args()
@@ -31,7 +33,8 @@ def validateConfig():
 
     return awsConfigDict        
 
-''' This will get the ip address and state of each EC2 instance '''
+# This will get the ip address and state of each EC2 instance
+#
 def getEC2InstanceStates(accessKeyId, secretAccessKey, availabilityZone):
     try:
         ec2 = boto.ec2.connect_to_region(availabilityZone, aws_access_key_id=accessKeyId, aws_secret_access_key=secretAccessKey)
@@ -50,7 +53,8 @@ def getEC2InstanceStates(accessKeyId, secretAccessKey, availabilityZone):
 
     return (ipList, stateList)
 
-''' Once we have a list of ip addresses and states, iterate over each one and display them to the user '''
+# Once we have a list of ip addresses and states, iterate over each one and display them to the user
+#
 try:
     awsConfigDict = validateConfig()
 
